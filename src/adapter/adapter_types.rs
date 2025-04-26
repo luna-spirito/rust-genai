@@ -1,8 +1,8 @@
-use crate::ModelIden;
 use crate::adapter::AdapterKind;
 use crate::chat::{ChatOptionsSet, ChatRequest, ChatResponse, ChatStreamResponse};
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::WebResponse;
+use crate::webc::{WebClient, WebResponse};
+use crate::{ClientCache, ModelIden};
 use crate::{Result, ServiceTarget};
 use reqwest::RequestBuilder;
 use serde_json::Value;
@@ -23,11 +23,13 @@ pub trait Adapter {
 	fn get_service_url(model_iden: &ModelIden, service_type: ServiceType, endpoint: Endpoint) -> String;
 
 	/// To be implemented by Adapters.
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		service_target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		options_set: ChatOptionsSet<'_, '_>,
+		cache: &ClientCache,
+		web_client: &WebClient,
 	) -> Result<WebRequestData>;
 
 	/// To be implemented by Adapters.

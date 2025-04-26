@@ -4,8 +4,8 @@ use crate::adapter::openai::OpenAIAdapter;
 use crate::adapter::{Adapter, AdapterKind, ServiceType, WebRequestData};
 use crate::chat::{ChatOptionsSet, ChatRequest, ChatResponse, ChatStreamResponse};
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::WebResponse;
-use crate::{Error, Result};
+use crate::webc::{WebClient, WebResponse};
+use crate::{ClientCache, Error, Result};
 use crate::{ModelIden, ServiceTarget};
 use reqwest::RequestBuilder;
 use serde_json::Value;
@@ -63,11 +63,13 @@ impl Adapter for OllamaAdapter {
 		OpenAIAdapter::util_get_service_url(model_iden, service_type, endpoint)
 	}
 
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		chat_options: ChatOptionsSet<'_, '_>,
+		_cache: &ClientCache,
+		_web_client: &WebClient,
 	) -> Result<WebRequestData> {
 		OpenAIAdapter::util_to_web_request_data(target, service_type, chat_req, chat_options)
 	}

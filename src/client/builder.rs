@@ -5,7 +5,7 @@ use crate::resolver::{
 };
 use crate::webc::WebClient;
 use crate::{Client, ClientConfig};
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 /// The builder for the `Client` structure.
 ///
@@ -94,6 +94,7 @@ impl ClientBuilder {
 		let inner = super::ClientInner {
 			web_client: self.web_client.unwrap_or_default(),
 			config: self.config.unwrap_or_default(),
+			cache: RwLock::new(Vec::new()),
 		};
 		Client { inner: Arc::new(inner) }
 	}

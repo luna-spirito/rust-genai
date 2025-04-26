@@ -1,9 +1,9 @@
-use crate::ModelIden;
 use crate::adapter::openai::OpenAIAdapter;
 use crate::adapter::{Adapter, AdapterKind, ServiceType, WebRequestData};
 use crate::chat::{ChatOptionsSet, ChatRequest, ChatResponse, ChatStreamResponse};
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::WebResponse;
+use crate::webc::{WebClient, WebResponse};
+use crate::{ClientCache, ModelIden};
 use crate::{Result, ServiceTarget};
 use reqwest::RequestBuilder;
 
@@ -55,11 +55,13 @@ impl Adapter for GroqAdapter {
 		OpenAIAdapter::util_get_service_url(model, service_type, endpoint)
 	}
 
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		chat_options: ChatOptionsSet<'_, '_>,
+		_cache: &ClientCache,
+		_web_client: &WebClient,
 	) -> Result<WebRequestData> {
 		OpenAIAdapter::util_to_web_request_data(target, service_type, chat_req, chat_options)
 	}

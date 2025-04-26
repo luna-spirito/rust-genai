@@ -3,7 +3,7 @@ use derive_more::derive::From;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-#[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, From)]
 pub enum MessageContent {
 	/// Text content
 	Text(String),
@@ -111,7 +111,7 @@ impl From<Vec<ContentPart>> for MessageContent {
 
 // endregion: --- Froms
 
-#[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, From)]
 pub enum ContentPart {
 	Text(String),
 	Image { content_type: String, source: ImageSource },
@@ -148,7 +148,7 @@ impl<'a> From<&'a str> for ContentPart {
 
 // endregion: --- Froms
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ImageSource {
 	/// For models/services that support URL as input
 	/// NOTE: Few AI services support this.

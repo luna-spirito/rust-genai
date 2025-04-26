@@ -7,7 +7,7 @@ use crate::adapter::AdapterKind;
 ///
 /// This struct represents the association between an adapter kind
 /// and a model name, allowing for easy conversion and instantiation.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ModelIden {
 	/// The adapter kind.
 	pub adapter_kind: AdapterKind,

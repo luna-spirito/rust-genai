@@ -58,8 +58,15 @@ impl Client {
 		let target = self.config().resolve_service_target(model).await?;
 		let model = target.model.clone();
 
-		let WebRequestData { headers, payload, url } =
-			AdapterDispatcher::to_web_request_data(target, ServiceType::Chat, chat_req, options_set.clone())?;
+		let WebRequestData { headers, payload, url } = AdapterDispatcher::to_web_request_data(
+			target,
+			ServiceType::Chat,
+			chat_req,
+			options_set.clone(),
+			self.cache(),
+			self.web_client(),
+		)
+		.await?;
 
 		let web_res =
 			self.web_client()
@@ -95,7 +102,15 @@ impl Client {
 			mut url,
 			mut headers,
 			payload,
-		} = AdapterDispatcher::to_web_request_data(target, ServiceType::ChatStream, chat_req, options_set.clone())?;
+		} = AdapterDispatcher::to_web_request_data(
+			target,
+			ServiceType::ChatStream,
+			chat_req,
+			options_set.clone(),
+			self.cache(),
+			self.web_client(),
+		)
+		.await?;
 
 		if let AuthData::RequestOverride {
 			url: override_url,

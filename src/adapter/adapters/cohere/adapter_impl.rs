@@ -5,8 +5,8 @@ use crate::chat::{
 	ChatOptionsSet, ChatRequest, ChatResponse, ChatRole, ChatStream, ChatStreamResponse, MessageContent, Usage,
 };
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::{WebResponse, WebStream};
-use crate::{Error, Result};
+use crate::webc::{WebClient, WebResponse, WebStream};
+use crate::{ClientCache, Error, Result};
 use crate::{ModelIden, ServiceTarget};
 use reqwest::RequestBuilder;
 use serde_json::{Value, json};
@@ -49,11 +49,13 @@ impl Adapter for CohereAdapter {
 		}
 	}
 
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		options_set: ChatOptionsSet<'_, '_>,
+		_cache: &ClientCache,
+		_web_client: &WebClient,
 	) -> Result<WebRequestData> {
 		let ServiceTarget { endpoint, auth, model } = target;
 

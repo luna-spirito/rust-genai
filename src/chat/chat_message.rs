@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Both approaches have pros and cons. For now, genai has taken the former approach, but we might revisit this in a "major" release.
 ///
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct ChatMessage {
 	/// The role of the message.
 	pub role: ChatRole,
@@ -64,7 +64,7 @@ impl ChatMessage {
 }
 // region:    --- MessageOptions
 
-#[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, From)]
 pub struct MessageOptions {
 	#[from]
 	pub cache_control: Option<CacheControl>,
@@ -76,7 +76,7 @@ pub struct MessageOptions {
 ///        to keep things simpler, the cache_control is at the ChatMessage leve
 ///        and genera will create the tright thing
 /// Note: OpenAI is transparent, and Gemini has a separate call for it (so not supported for now)
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CacheControl {
 	Ephemeral,
 }
@@ -91,7 +91,7 @@ impl From<CacheControl> for MessageOptions {
 // endregion: --- MessageOptions
 
 /// Chat roles.
-#[derive(Debug, Clone, Serialize, Deserialize, derive_more::Display)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, derive_more::Display)]
 #[allow(missing_docs)]
 pub enum ChatRole {
 	System,

@@ -3,12 +3,12 @@ use std::sync::Arc;
 /// A construct to store the endpoint of a service.
 /// It is designed to be efficiently clonable.
 /// For now, it supports only `base_url`, but it may later have other URLs per "service name".
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Endpoint {
 	inner: EndpointInner,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 enum EndpointInner {
 	Static(&'static str),
 	Owned(Arc<str>),

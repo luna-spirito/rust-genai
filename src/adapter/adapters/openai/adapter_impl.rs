@@ -6,8 +6,8 @@ use crate::chat::{
 	ContentPart, ImageSource, MessageContent, ReasoningEffort, ToolCall, Usage,
 };
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::WebResponse;
-use crate::{Error, Result};
+use crate::webc::{WebClient, WebResponse};
+use crate::{ClientCache, Error, Result};
 use crate::{ModelIden, ServiceTarget};
 use reqwest::RequestBuilder;
 use reqwest_eventsource::EventSource;
@@ -51,11 +51,13 @@ impl Adapter for OpenAIAdapter {
 		Self::util_get_service_url(model, service_type, endpoint)
 	}
 
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		chat_options: ChatOptionsSet<'_, '_>,
+		_cache: &ClientCache,
+		_web_client: &WebClient,
 	) -> Result<WebRequestData> {
 		OpenAIAdapter::util_to_web_request_data(target, service_type, chat_req, chat_options)
 	}

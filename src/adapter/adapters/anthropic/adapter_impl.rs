@@ -1,4 +1,3 @@
-use crate::ModelIden;
 use crate::adapter::adapters::support::get_api_key;
 use crate::adapter::anthropic::AnthropicStreamer;
 use crate::adapter::{Adapter, AdapterKind, ServiceType, WebRequestData};
@@ -7,7 +6,8 @@ use crate::chat::{
 	MessageContent, PromptTokensDetails, ToolCall, Usage,
 };
 use crate::resolver::{AuthData, Endpoint};
-use crate::webc::WebResponse;
+use crate::webc::{WebClient, WebResponse};
+use crate::{ClientCache, ModelIden};
 use crate::{Result, ServiceTarget};
 use reqwest::RequestBuilder;
 use reqwest_eventsource::EventSource;
@@ -61,11 +61,13 @@ impl Adapter for AnthropicAdapter {
 		}
 	}
 
-	fn to_web_request_data(
+	async fn to_web_request_data(
 		target: ServiceTarget,
 		service_type: ServiceType,
 		chat_req: ChatRequest,
 		options_set: ChatOptionsSet<'_, '_>,
+		_cache: &ClientCache,
+		_web_client: &WebClient,
 	) -> Result<WebRequestData> {
 		let ServiceTarget { endpoint, auth, model } = target;
 
